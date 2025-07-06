@@ -1,7 +1,6 @@
 {
   "name": "csi-node",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +17,10 @@
   },
   "homepage": "https://github.com/himanijangid07/csi-node.js#readme",
   "dependencies": {
-    "express": "^5.1.0"
-  }
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1"
+  },
+  "description": ""
 }
