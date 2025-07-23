@@ -7,8 +7,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const axios = require('axios');
 const { setupSockets } = require('./socket');
+const googleAuthRoute = require('./routes/googleAuthRoutes'); 
 
-const authRoutes = require('./routes/auth');
+import authRoutes from './routes/auth.js';
 const docRoutes = require('./routes/document');
 
 const app = express();
@@ -38,32 +39,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // ✅ API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/docs', docRoutes);
-
-// ✅ Judge0 Code Execution Endpoint
-app.post('/run', async (req, res) => {
-  const { code, language_id = 63 } = req.body; // default to JavaScript
-
-  try {
-    const result = await axios.post(
-      'https://judge0-ce.p.rapidapi.com/submissions?base64_encoded=false&wait=true',
-      {
-        source_code: code,
-        language_id,
-      },
-      {
-        headers: {
-          'X-RapidAPI-Key': process.env.JUDGE0_API_KEY,
-          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    res.json(result.data);
-  } catch (err) {
-    res.status(500).json({ error: 'Execution failed', details: err.message });
-  }
-});
+app.use('/api/google-auth', googleAuthRoute);
 
 // ✅ Setup Socket.io handlers
 setupSockets(io);
